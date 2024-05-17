@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Secure Text</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Secure Text</h1>
+        <div>
+            <button id="encrypt-button">Encrypt</button>
+            <button id="decrypt-button">Decrypt</button>
+        </div>
+        <div id="encrypt-section">
+            <input type="text" id="text-string" placeholder="Text String">
+            <input type="password" id="encryption-password" placeholder="Encryption Password">
+            <textarea id="encrypted-data" placeholder="Encrypted Data"></textarea>
+            <button id="copy-encrypted">Copy</button>
+        </div>
+        <div id="decrypt-section" style="display:none;">
+            <input type="text" id="encrypted-string" placeholder="Encrypted String">
+            <input type="password" id="decryption-password" placeholder="Decryption Password">
+            <textarea id="decrypted-data" placeholder="Decrypted Data"></textarea>
+            <button id="copy-decrypted">Copy</button>
+        </div>
+    </div>
+    <script src="popup.js"></script>
+</body>
+
+</html>
