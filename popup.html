@@ -1,32 +1,76 @@
 <!DOCTYPE html>
-<html>
-
-<head>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Secure Text</title>
-    <link rel="stylesheet" href="popup.css">
-</head>
-
-<body>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
     <div class="container">
-        <h1>Secure Text</h1>
-        <div>
-            <button id="encrypt-button">Encrypt</button>
-            <button id="decrypt-button">Decrypt</button>
-        </div>
-        <div id="encrypt-section">
-            <input type="text" id="text-string" placeholder="Text String">
-            <input type="password" id="encryption-password" placeholder="Encryption Password">
-            <textarea id="encrypted-data" placeholder="Encrypted Data"></textarea>
-            <button id="copy-encrypted">Copy</button>
-        </div>
-        <div id="decrypt-section" style="display:none;">
-            <input type="text" id="encrypted-string" placeholder="Encrypted String">
-            <input type="password" id="decryption-password" placeholder="Decryption Password">
-            <textarea id="decrypted-data" placeholder="Decrypted Data"></textarea>
-            <button id="copy-decrypted">Copy</button>
-        </div>
-    </div>
-    <script src="popup.js"></script>
-</body>
+      <h1>Secure Text</h1>
+      <div class="buttons">
+        <button id="encryptModeBtn">Select Encrypt</button>
+        <button id="decryptModeBtn">Select Decrypt</button>
+      </div>
 
+      <!-- Encryption Section -->
+      <div id="encryptSection">
+        <div class="form-group">
+          <label for="textString">Text String</label>
+          <input
+            type="text"
+            id="textString"
+            placeholder="Enter text to encrypt"
+          />
+        </div>
+        <div class="form-group">
+          <label for="encryptionPassword">Encryption Password</label>
+          <input
+            type="password"
+            id="encryptionPassword"
+            placeholder="Enter password"
+          />
+        </div>
+        <div class="parent">
+          <button id="encryptBtn">Encrypt</button>
+        </div>
+        <div class="form-group">
+          <label for="encryptedData">Encrypted Data</label>
+          <textarea id="encryptedData" rows="4" readonly></textarea>
+          <div class="copy-button" id="copyEncryptedBtn">Copy</div>
+        </div>
+      </div>
+
+      <!-- Decryption Section -->
+      <div id="decryptSection" class="hidden">
+        <div class="form-group">
+          <label for="encryptedString">Encrypted String</label>
+          <input
+            type="text"
+            id="encryptedString"
+            placeholder="Enter encrypted text"
+          />
+        </div>
+        <div class="form-group">
+          <label for="decryptionPassword">Decryption Password</label>
+          <input
+            type="password"
+            id="decryptionPassword"
+            placeholder="Enter password"
+          />
+        </div>
+        <div class="parent">
+          <button id="decryptBtn">Decrypt</button>
+        </div>
+        <div class="form-group">
+          <label for="decryptedData">Decrypted Data</label>
+          <textarea id="decryptedData" rows="4" readonly></textarea>
+          <div class="copy-button" id="copyDecryptedBtn">Copy</div>
+        </div>
+      </div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
 </html>
