@@ -1,9 +1,39 @@
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById("encryptModeBtn").addEventListener("click", showEncrypt);
-  document.getElementById("decryptModeBtn").addEventListener("click", showDecrypt);
+import { encryptGCM, decryptGCM } from "./Algorithums/AES-GCM.js";
+import { encryptCBC, decryptCBC } from "./Algorithums/AES-CBC.js";
+import { encodeToBase64, decodeFromBase64 } from "./Algorithums/Base64.js";
+import { encryptHMAC, decryptHMAC } from "./Algorithums/HMAC.js";
+import { base32Encode, base32Decode } from "./Algorithums/Base32.js";
 
-  document.getElementById("copyEncryptedBtn").addEventListener("click", copyToClipboard);
-  document.getElementById("copyDecryptedBtn").addEventListener("click", copyToClipboardDecrypted);
+document.addEventListener("DOMContentLoaded", () => {
+  document
+    .querySelectorAll('input[name="encryption-type"]')
+    .forEach((radio) => {
+      radio.addEventListener("change", (event) => {
+        console.log(`Selected encryption type: ${event.target.value}`);
+        let passwordInput = document.getElementById("encryptionPassword");
+        if (event.target.value == "BASE32" || event.target.value == "BASE64") {
+          passwordInput.value = "";
+          passwordInput.disabled = true;
+          passwordInput.style.backgroundColor = "#d3d3d3";
+        } else {
+          passwordInput.disabled = false;
+          passwordInput.style.backgroundColor = "";
+        }
+      });
+    });
+  document
+    .getElementById("encryptModeBtn")
+    .addEventListener("click", showEncrypt);
+  document
+    .getElementById("decryptModeBtn")
+    .addEventListener("click", showDecrypt);
+
+  document
+    .getElementById("copyEncryptedBtn")
+    .addEventListener("click", copyToClipboard);
+  document
+    .getElementById("copyDecryptedBtn")
+    .addEventListener("click", copyToClipboardDecrypted);
 
   function showEncrypt() {
     document.getElementById("encryptModeBtn").style.backgroundColor = "#017BFE";
@@ -45,99 +75,58 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 2000);
   }
 
-  async function deriveKey(password, salt) {
-    const encoder = new TextEncoder();
-    const keyMaterial = await crypto.subtle.importKey(
-      "raw",
-      encoder.encode(password),
-      { name: "PBKDF2" },
-      false,
-      ["deriveKey"]
-    );
-    const key = await crypto.subtle.deriveKey(
-      {
-        name: "PBKDF2",
-        salt: salt,
-        iterations: 100000,
-        hash: "SHA-256"
-      },
-      keyMaterial,
-      { name: "AES-GCM", length: 256 },
-      true,
-      ["encrypt", "decrypt"]
-    );
-    return key;
-  }
-
-  async function encrypt(text, password) {
-    const salt = new Uint8Array(16); // Fixed salt (all zeros)
-    const iv = new Uint8Array(12);   // Fixed IV (all zeros)
-    const key = await deriveKey(password, salt);
-    const encoder = new TextEncoder();
-    const data = encoder.encode(text);
-    const encrypted = await crypto.subtle.encrypt(
-      {
-        name: "AES-GCM",
-        iv: iv
-      },
-      key,
-      data
-    );
-
-    const encryptedArray = new Uint8Array(encrypted);
-    const combinedArray = new Uint8Array(salt.length + iv.length + encryptedArray.length);
-    combinedArray.set(salt);
-    combinedArray.set(iv, salt.length);
-    combinedArray.set(encryptedArray, salt.length + iv.length);
-
-    return btoa(String.fromCharCode.apply(null, combinedArray));
-  }
-
-  async function decrypt(encryptedBase64, password) {
-    const combinedArray = Uint8Array.from(atob(encryptedBase64), c => c.charCodeAt(0));
-    const salt = combinedArray.slice(0, 16);
-    const iv = combinedArray.slice(16, 28);
-    const encryptedArray = combinedArray.slice(28);
-    const key = await deriveKey(password, salt);
-
-    try {
-      const decrypted = await crypto.subtle.decrypt(
-        {
-          name: "AES-GCM",
-          iv: iv
-        },
-        key,
-        encryptedArray
-      );
-
-      const decoder = new TextDecoder();
-      return decoder.decode(decrypted);
-    } catch (e) {
-      // Handle decryption error (e.g., wrong password)
-      alert("Please enter correct password.");
-      return "";
-    }
-  }
-
-  document.getElementById('encryptBtn').addEventListener('click', async () => {
+  document.getElementById("encryptBtn").addEventListener("click", async () => {
+    const selectedRadioButton = document.querySelector(
+      'input[name="encryption-type"]:checked'
+    ).value;
+    console.log(selectedRadioButton);
     const textToEncrypt = document.getElementById("textString").value;
     const password = document.getElementById("encryptionPassword").value;
-    if (textToEncrypt != "" && password != "") {
-      const encryptedText = await encrypt(textToEncrypt, password);
-      document.getElementById('encryptedData').value = encryptedText;
-    } else {
-      alert("Please enter both text and password to encrypt.");
+    let encryptedText;
+
+    switch (selectedRadioButton) {
+      case "AES-GCM":
+        encryptedText = await encryptGCM(textToEncrypt, password);
+        break;
+      case "AES-CBC":
+        encryptedText = await encryptCBC(textToEncrypt, password);
+        break;
+      case "BASE64":
+        encryptedText = await encodeToBase64(textToEncrypt, password);
+        break;
+      case "BASE32":
+        encryptedText = await base32Encode(textToEncrypt, password);
+        break;
+      default:
+        return "Unknown encryption method.";
     }
+    document.getElementById("encryptedData").value = encryptedText;
   });
 
-  document.getElementById('decryptBtn').addEventListener('click', async () => {
+  document.getElementById("decryptBtn").addEventListener("click", async () => {
+    const selectedRadioButton = document.querySelector(
+      'input[name="encryption-type"]:checked'
+    ).value;
     const encryptedText = document.getElementById("encryptedString").value;
     const password = document.getElementById("decryptionPassword").value;
-    if (encryptedText != "" && password != "") {
-      const decryptedText = await decrypt(encryptedText, password);
-      document.getElementById("decryptedData").value = decryptedText;
-    } else {
-      alert("Please enter both encrypted data and password to decrypt.");
+    let decryptedText;
+
+    switch (selectedRadioButton) {
+      case "AES-GCM":
+        decryptedText = await decryptGCM(encryptedText, password);
+        break;
+      case "AES-CBC":
+        decryptedText = await decryptCBC(encryptedText, password);
+        break;
+      case "BASE64":
+        decryptedText = await decodeFromBase64(encryptedText, password);
+        break;
+      case "BASE32":
+        decryptedText = await base32Decode(encryptedText, password);
+        break;
+      default:
+        return "Unknown encryption method.";
     }
+    document.getElementById("decryptedData").value = decryptedText;
   });
 });

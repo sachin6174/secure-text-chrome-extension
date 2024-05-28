@@ -13,7 +13,30 @@
         <button id="encryptModeBtn">Select Encrypt</button>
         <button id="decryptModeBtn">Select Decrypt</button>
       </div>
-
+      <!-- encryption buttons slection-->
+      <div class="radio-group">
+        <div class="form-group">
+          <label for="encryption-method">Select Encryption Method</label>
+          <div id="encryption-method">
+            <label class="radiobox">
+              <input type="radio" name="encryption-type" value="AES-GCM" checked />
+              <span>AES-GCM</span>
+            </label>
+            <label class="radiobox">
+              <input type="radio" name="encryption-type" value="AES-CBC" />
+              <span>AES-CBC</span>
+            </label>
+            <label class="radiobox">
+              <input type="radio" name="encryption-type" value="BASE64" />
+              <span>BASE64</span>
+            </label>
+            <label class="radiobox">
+              <input type="radio" name="encryption-type" value="BASE32" />
+              <span>BASE32</span>
+            </label>
+          </div>
+        </div>
+       </div>
       <!-- Encryption Section -->
       <div id="encryptSection">
         <div class="form-group">
@@ -70,7 +93,6 @@
         </div>
       </div>
     </div>
-
-    <script src="popup.js"></script>
+    <script type="module" src="popup.js"></script>
   </body>
 </html>
