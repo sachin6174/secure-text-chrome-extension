@@ -18,7 +18,7 @@ AES-CBC (Advanced Encryption Standard-Cipher Block Chaining) is a symmetric encr
 ##### 1.BASE-64 :
 Base64 is an encoding scheme that converts binary data into an ASCII string format. This is done to ensure the data remains intact without modification during transport. It uses a specific 64-character alphabet.
 
-##### 1.BASE-32 :
+##### 2.BASE-32 :
 Base64 is an encoding scheme that converts binary data into an ASCII string format. This is done to ensure the data remains intact without modification during transport. It uses a specific 64-character alphabet.
 
 
