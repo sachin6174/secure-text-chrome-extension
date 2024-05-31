@@ -68,7 +68,7 @@
       return decoder.decode(decrypted);
     } catch (e) {
       // Handle decryption error (e.g., wrong password)
-      alert("Please enter correct password.");
+      alert("Please check text and password.");
       return "";
     }
   }
