@@ -1,98 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Secure Text</title>
-    <link rel="stylesheet" href="popup.css" />
-  </head>
-  <body>
-    <div class="container">
-      <h1>Secure Text</h1>
-      <div class="buttons">
-        <button id="encryptModeBtn">Select Encrypt</button>
-        <button id="decryptModeBtn">Select Decrypt</button>
-      </div>
-      <!-- encryption buttons slection-->
-      <div class="radio-group">
-        <div class="form-group">
-          <label for="encryption-method">Select Encryption Method</label>
-          <div id="encryption-method">
-            <label class="radiobox">
-              <input type="radio" name="encryption-type" value="AES-GCM" checked />
-              <span>AES-GCM</span>
-            </label>
-            <label class="radiobox">
-              <input type="radio" name="encryption-type" value="AES-CBC" />
-              <span>AES-CBC</span>
-            </label>
-            <label class="radiobox">
-              <input type="radio" name="encryption-type" value="BASE64" />
-              <span>BASE64</span>
-            </label>
-            <label class="radiobox">
-              <input type="radio" name="encryption-type" value="BASE32" />
-              <span>BASE32</span>
-            </label>
-          </div>
-        </div>
-       </div>
-      <!-- Encryption Section -->
-      <div id="encryptSection">
-        <div class="form-group">
-          <label for="textString">Text String</label>
-          <input
-            type="text"
-            id="textString"
-            placeholder="Enter text to encrypt"
-          />
-        </div>
-        <div class="form-group">
-          <label for="encryptionPassword">Encryption Password</label>
-          <input
-            type="password"
-            id="encryptionPassword"
-            placeholder="Enter password"
-          />
-        </div>
-        <div class="parent">
-          <button id="encryptBtn">Encrypt</button>
-        </div>
-        <div class="form-group">
-          <label for="encryptedData">Encrypted Data</label>
-          <textarea id="encryptedData" rows="4" readonly></textarea>
-          <div class="copy-button" id="copyEncryptedBtn">Copy</div>
-        </div>
-      </div>
 
-      <!-- Decryption Section -->
-      <div id="decryptSection" class="hidden">
-        <div class="form-group">
-          <label for="encryptedString">Encrypted String</label>
-          <input
-            type="text"
-            id="encryptedString"
-            placeholder="Enter encrypted text"
-          />
-        </div>
-        <div class="form-group">
-          <label for="decryptionPassword">Decryption Password</label>
-          <input
-            type="password"
-            id="decryptionPassword"
-            placeholder="Enter password"
-          />
-        </div>
-        <div class="parent">
-          <button id="decryptBtn">Decrypt</button>
-        </div>
-        <div class="form-group">
-          <label for="decryptedData">Decrypted Data</label>
-          <textarea id="decryptedData" rows="4" readonly></textarea>
-          <div class="copy-button" id="copyDecryptedBtn">Copy</div>
-        </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Secure Text</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+
+<body>
+
+  <div class="mainbox">
+
+    <h1 class="app-name-label">Secure Text</h1>
+
+
+    <div class="encrypt-decrypt-selection">
+      <button id="encryptModeBtn" class="btn-1">Select Encrypt</button>
+      <button id="decryptModeBtn" class="btn-2">Select Decrypt</button>
+    </div>
+
+    <div class="single-element-centering">
+      <h3 id="methodLabel">Select Encryption Method</h3>
+    </div>
+
+    <div class="encryption-method-selection">
+      <div class="radio-item">
+        <input type="radio" id="AES-GCM" name="encryption-type" checked>
+        <label for="AES-GCM">AES-GCM</label>
+      </div>
+      <div class="radio-item">
+        <input type="radio" id="AES-CBC" name="encryption-type">
+        <label for="AES-CBC">AES-CBC</label>
+      </div>
+      <div class="radio-item">
+        <input type="radio" id="BASE64" name="encryption-type">
+        <label for="BASE64">BASE64</label>
+      </div>
+      <div class="radio-item">
+        <input type="radio" id="BASE32" name="encryption-type">
+        <label for="BASE32">BASE32</label>
       </div>
     </div>
-    <script type="module" src="popup.js"></script>
-  </body>
+
+    <div class="text-collection">
+      <label for="textString" class="text-collection-label" id="stringLabel">Text String</label>
+      <input type="text" id="stringBox" placeholder="Enter text to encrypt" />
+    </div>
+
+    <div class="password-collection">
+      <label for="encryptionPassword" class="password-collection-label" id="passwordLabel">Encryption Password</label>
+      <input type="password" id="passwordBox" placeholder="Enter password" />
+    </div>
+
+    <div class="single-element-centering">
+      <button id="encryptDecryptBtn">Encrypt</button>
+    </div>
+
+    <div class="result-display">
+      <h3 class="result-display-label" id="resultLabel">Encrypted Data<h3>
+      <textarea id="encryptedDecryptedData" rows="5" column="3" readonly></textarea>
+      <div>
+        <button id="copyDataBtn" class="copy-button">copy</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script type="module" src="popup.js"></script>
+
+</body>
+
 </html>
