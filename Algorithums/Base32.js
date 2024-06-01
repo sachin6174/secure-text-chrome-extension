@@ -31,20 +31,25 @@ export function base32Decode(input) {
   let bitsLeft = 0;
 
   input = input.toUpperCase().replace(/=+$/, "");
+  try {
+    for (let i = 0; i < input.length; i++) {
+      const index = base32Lookup.indexOf(input[i]);
+      if (index === -1) {
+        throw new Error("Invalid Base32 character");
+      }
 
-  for (let i = 0; i < input.length; i++) {
-    const index = base32Lookup.indexOf(input[i]);
-    if (index === -1) {
-      throw new Error("Invalid Base32 character");
+      buffer = (buffer << 5) | index;
+      bitsLeft += 5;
+
+      if (bitsLeft >= 8) {
+        output += String.fromCharCode((buffer >> (bitsLeft - 8)) & 255);
+        bitsLeft -= 8;
+      }
     }
-
-    buffer = (buffer << 5) | index;
-    bitsLeft += 5;
-
-    if (bitsLeft >= 8) {
-      output += String.fromCharCode((buffer >> (bitsLeft - 8)) & 255);
-      bitsLeft -= 8;
-    }
+  } catch (e) {
+    // Handle decryption error (e.g., wrong password)
+    alert("Either selceted algorithm or encrypted string is wrong.");
+    return "";
   }
 
   return output;
